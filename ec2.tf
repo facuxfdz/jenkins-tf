@@ -61,6 +61,32 @@ resource "aws_instance" "jenkins" {
     }
   }
 
+  provisioner "file" {
+    source = "disable-login.groovy"
+    destination = "/tmp/disable-login.groovy"
+
+    connection {
+      type     = "ssh"
+      user     = "ubuntu"
+      host     = self.public_ip
+      timeout = "1m"
+      agent = true
+    }
+  }
+
+  provisioner "file" {
+    source = "install-plugins.groovy"
+    destination = "/tmp/install-plugins.groovy"
+
+    connection {
+      type     = "ssh"
+      user     = "ubuntu"
+      host     = self.public_ip
+      timeout = "1m"
+      agent = true
+    }
+  }
+
   provisioner "remote-exec" {
     connection {
         type     = "ssh"
@@ -70,6 +96,9 @@ resource "aws_instance" "jenkins" {
         agent = true
     }
     inline = [
+      "sudo mkdir -p /var/lib/jenkins/init.groovy.d",
+      "sudo mv /tmp/disable-login.groovy /var/lib/jenkins/init.groovy.d/disable-login.groovy",
+      "sudo mv /tmp/install-plugins.groovy /var/lib/jenkins/init.groovy.d/install-plugins.groovy",
       "sudo chmod +x /tmp/jenkins-install.sh",
       "sudo /tmp/jenkins-install.sh"
     ]
