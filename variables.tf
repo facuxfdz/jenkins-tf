@@ -18,10 +18,6 @@ variable "availability_zones" {
   description = "Availability Zones for vpc"
 }
 
-variable "private_key_path" {
-  description = "Private Key Path"
-}
-
 variable "public_key_path" {
   description = "Public Key Path"
 }
