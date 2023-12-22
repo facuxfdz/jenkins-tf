@@ -1,34 +1,40 @@
 variable "aws_region" {
-    description = "AWS Region"
-    default = "us-east-1"
+  description = "AWS Region"
 }
 
 variable "vpc_name" {
-    description = "VPC Name"
-    default = "jenkins-vpc"
+  description = "VPC Name"
 }
 
 variable "cidr_block" {
-    description = "CIDR Block"
-    default = "10.0.0.0/22"
+  description = "CIDR Block"
 }
 
 variable "public_subnets" {
-    description = "Public Subnets"
-    default = ["10.0.1.0/24"]
+  description = "Public Subnets"
 }
 
 variable "availability_zones" {
-    description = "Availability Zones for vpc"
-    default = ["us-east-1a"]
+  description = "Availability Zones for vpc"
 }
 
 variable "private_key_path" {
-    description = "Private Key Path"
-    default = "~/.ssh/id_rsa"
+  description = "Private Key Path"
 }
 
 variable "public_key_path" {
-    description = "Public Key Path"
-    default = "~/.ssh/id_rsa.pub"
+  description = "Public Key Path"
+}
+
+variable "jenkins_admin_credentials" {
+  description = "Jenkins Credentials"
+  type = object({
+    username = string
+    password = string
+  })
+}
+
+variable "jenkins_plugins" {
+  description = "Jenkins Plugins"
+  type        = string
 }

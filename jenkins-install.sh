@@ -8,14 +8,15 @@ echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
     https://pkg.jenkins.io/debian binary/ | sudo tee \
     /etc/apt/sources.list.d/jenkins.list > /dev/null
             
+
+JENKINS_USERNAME=$1
+JENKINS_PASSWORD=$2
+JENKINS_PLUGINS=$3
+
+echo "$JENKINS_USERNAME,$JENKINS_PASSWORD" > /tmp/jenkins_credentials.txt
+echo "$JENKINS_PLUGINS" > /tmp/jenkins_plugins.txt
+
 sudo apt-get update -y
 sudo apt-get install jenkins -y
 sudo systemctl enable jenkins
 sudo systemctl start jenkins
-
-
-# wget http://localhost:8080/jnlpJars/jenkins-cli.jar || true
-# JENKINS_PASS=$(sudo cat /var/lib/jenkins/secrets/initialAdminPassword)
-# echo $JENKINS_PASS
-
-# java -jar jenkins-cli.jar -s http://localhost:8080/ install-plugin configuration-as-code -auth admin:$JENKINS_PASS -restart || true

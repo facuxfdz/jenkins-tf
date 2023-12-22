@@ -5,8 +5,13 @@ def logger = Logger.getLogger("")
 def installed = false
 def initialized = false
 
+def file = new File("/tmp/jenkins_plugins.txt")
+def fileContents = ""
+file.eachLine { line ->
+  fileContents += line
+}
 
-def plugins = ["configuration-as-code"]
+def plugins = fileContents.split(",")
 
 logger.info("" + plugins)
 def instance = Jenkins.getInstance()

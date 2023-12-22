@@ -8,8 +8,17 @@ def instance = Jenkins.getInstance()
 
 println "Disabling login for instance: ${instance}"
 
-def username = "admin"
-def password = "admin123"
+def fileContents = ""
+def file = new File("/tmp/jenkins_credentials.txt")
+file.eachLine { line ->
+    fileContents += line
+}
+
+println("File contents: ${fileContents}")
+String[] lines = fileContents.split(",")
+println("lines: ${lines}")
+def username = lines[0]
+def password = lines[1]
 
 def hudsonRealm = new HudsonPrivateSecurityRealm(false)
 
@@ -26,3 +35,4 @@ if (!instance.installState.isSetupComplete()){
 }
 
 instance.save()
+file.delete()

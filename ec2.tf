@@ -53,54 +53,54 @@ resource "aws_instance" "jenkins" {
     source      = "jenkins-install.sh"
     destination = "/tmp/jenkins-install.sh"
     connection {
-      type     = "ssh"
-      user     = "ubuntu"
-      host     = self.public_ip
+      type    = "ssh"
+      user    = "ubuntu"
+      host    = self.public_ip
       timeout = "1m"
-      agent = true
+      agent   = true
     }
   }
 
   provisioner "file" {
-    source = "disable-login.groovy"
+    source      = "disable-login.groovy"
     destination = "/tmp/disable-login.groovy"
 
     connection {
-      type     = "ssh"
-      user     = "ubuntu"
-      host     = self.public_ip
+      type    = "ssh"
+      user    = "ubuntu"
+      host    = self.public_ip
       timeout = "1m"
-      agent = true
+      agent   = true
     }
   }
 
   provisioner "file" {
-    source = "install-plugins.groovy"
+    source      = "install-plugins.groovy"
     destination = "/tmp/install-plugins.groovy"
 
     connection {
-      type     = "ssh"
-      user     = "ubuntu"
-      host     = self.public_ip
+      type    = "ssh"
+      user    = "ubuntu"
+      host    = self.public_ip
       timeout = "1m"
-      agent = true
+      agent   = true
     }
   }
 
   provisioner "remote-exec" {
     connection {
-        type     = "ssh"
-        user     = "ubuntu"
-        host     = self.public_ip
-        timeout = "1m"
-        agent = true
+      type    = "ssh"
+      user    = "ubuntu"
+      host    = self.public_ip
+      timeout = "1m"
+      agent   = true
     }
     inline = [
       "sudo mkdir -p /var/lib/jenkins/init.groovy.d",
       "sudo mv /tmp/disable-login.groovy /var/lib/jenkins/init.groovy.d/disable-login.groovy",
       "sudo mv /tmp/install-plugins.groovy /var/lib/jenkins/init.groovy.d/install-plugins.groovy",
       "sudo chmod +x /tmp/jenkins-install.sh",
-      "sudo /tmp/jenkins-install.sh"
+      "sudo /tmp/jenkins-install.sh ${var.jenkins_admin_credentials.username} ${var.jenkins_admin_credentials.password} ${var.jenkins_plugins}"
     ]
   }
 
