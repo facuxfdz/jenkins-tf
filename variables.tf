@@ -3,7 +3,7 @@ variable "aws_region" {
 }
 
 variable "vpc_name" {
-  description = "VPC Name"
+  description = "VPC Name"  
 }
 
 variable "cidr_block" {
