@@ -15,7 +15,7 @@ data "aws_ami" "ubuntu_ami" {
 resource "aws_security_group" "ssh_sg" {
   name        = "ssh_sg"
   description = "Allow SSH inbound traffic"
-  vpc_id      = module.vpc.vpc_id
+  vpc_id      = var.create_vpc ? module.vpc[0].vpc_id : var.vpc_id
 
   ingress {
     description = "SSH from VPC"
@@ -47,7 +47,7 @@ resource "aws_instance" "jenkins" {
   instance_type               = "t2.medium"
   security_groups             = [aws_security_group.ssh_sg.id]
   associate_public_ip_address = true
-  subnet_id                   = module.vpc.public_subnets[0]
+  subnet_id                   = var.create_vpc ? module.vpc[0].public_subnets[0] : var.instance_subnet_id
   key_name                    = aws_key_pair.instance_key_pair.key_name
   provisioner "file" {
     source      = "jenkins-install.sh"

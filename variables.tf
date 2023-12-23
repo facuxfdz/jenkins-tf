@@ -2,20 +2,36 @@ variable "aws_region" {
   description = "AWS Region"
 }
 
-variable "vpc_name" {
-  description = "VPC Name"  
+variable "create_vpc" {
+  description = "Create VPC"
+  type        = bool
+  default     = true
 }
 
-variable "cidr_block" {
-  description = "CIDR Block"
+variable "instance_subnet_id" {
+  description = "Instance Subnet ID"
+  default     = ""
 }
 
-variable "public_subnets" {
-  description = "Public Subnets"
+variable "vpc_data" {
+  description = "VPC Data"
+  type = object({
+    name               = string
+    cidr_block         = string
+    public_subnets     = list(string)
+    availability_zones = list(string)
+  })
+  default = {
+    name               = ""
+    cidr_block         = ""
+    public_subnets     = []
+    availability_zones = []
+  }
 }
 
-variable "availability_zones" {
-  description = "Availability Zones for vpc"
+variable "vpc_id" {
+  description = "VPC ID in case of using existing VPC"
+  default     = ""
 }
 
 variable "public_key_path" {
